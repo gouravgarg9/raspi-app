@@ -16,7 +16,14 @@ sudo apt-get install libqt5gui5 qtbase5-dev
 
 sudo apt install python3-opencv
 
-pip3 install netifaces psutil google-api-python-client wiringpi dronekit opencv-python
+sudo apt install -y build-essential cmake git pkg-config libjpeg-dev libtiff-dev libpng-dev \
+libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev \
+libfontconfig1-dev libcairo2-dev libgdk-pixbuf2.0-dev libpango1.0-dev libgtk2.0-dev \
+libgtk-3-dev libatlas-base-dev gfortran python3-dev
+
+pip config set global.index-url https://pypi.org/simple
+
+pip install --default-timeout=100 --no-cache-dir netifaces psutil google-api-python-client wiringpi dronekit opencv-python
 
 install jasper and equired dependencies
 
