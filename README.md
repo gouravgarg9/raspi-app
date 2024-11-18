@@ -23,7 +23,7 @@ libgtk-3-dev libatlas-base-dev gfortran python3-dev
 
 pip config set global.index-url https://pypi.org/simple
 
-pip install --default-timeout=100 --no-cache-dir netifaces psutil google-api-python-client wiringpi dronekit opencv-python
+pip install --default-timeout=100 --no-cache-dir netifaces psutil google-api-python-client wiringpi dronekit opencv-contrib-python
 
 install jasper and equired dependencies
 
