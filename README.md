@@ -12,9 +12,7 @@ sudo apt install libatlas-base-dev
 
 sudo apt install libjasper-dev
 
-sudo apt install libqtgui4
-
-sudo apt install libqt4-test
+sudo apt-get install libqt5gui5 qtbase5-dev
 
 sudo apt install python3-opencv
 
