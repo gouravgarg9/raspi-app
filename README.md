@@ -16,8 +16,9 @@ sudo apt-get install libqt5gui5 qtbase5-dev
 
 sudo apt install python3-opencv
 
-sudo pip3 install netifaces psutil google-api-python-client wiringpi dronekit opencv-python
+pip3 install netifaces psutil google-api-python-client wiringpi dronekit opencv-python
 
+install jasper and equired dependencies
 
 To allow app to start automatically on powering raspian
 sudo mv droneapp.service /lib/systemd/system/droneapp.service
