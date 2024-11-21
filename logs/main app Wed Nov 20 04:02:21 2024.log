@@ -1,0 +1,43 @@
+2024-11-20 04:02:21,508 [DEBUG] DroneApp has started! Directory ./
+2024-11-20 04:02:22,035 [ERROR] 2
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 17, in __init__
+    rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+KeyError: 2
+2024-11-20 04:02:24,039 [ERROR] 2
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 17, in __init__
+    rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+KeyError: 2
+2024-11-20 04:02:26,043 [ERROR] 2
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 17, in __init__
+    rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+KeyError: 2
+2024-11-20 04:02:28,047 [ERROR] 2
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 17, in __init__
+    rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+KeyError: 2
+2024-11-20 04:02:30,051 [ERROR] 2
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 17, in __init__
+    rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+KeyError: 2
+2024-11-20 04:02:32,056 [ERROR] 2
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 17, in __init__
+    rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+KeyError: 2

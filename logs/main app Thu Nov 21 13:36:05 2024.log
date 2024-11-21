@@ -1,0 +1,61 @@
+2024-11-21 13:36:05,994 [DEBUG] DroneApp has started! Directory ./
+2024-11-21 13:36:06,492 [ERROR] [Errno 99] Cannot assign requested address
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 19, in __init__
+    self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1938, in mavlink_connection
+    return mavudp(device, source_system=source_system, source_component=source_component, input=input, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1062, in __init__
+    self.port.bind((a[0], int(a[1])))
+OSError: [Errno 99] Cannot assign requested address
+2024-11-21 13:36:08,500 [ERROR] [Errno 99] Cannot assign requested address
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 19, in __init__
+    self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1938, in mavlink_connection
+    return mavudp(device, source_system=source_system, source_component=source_component, input=input, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1062, in __init__
+    self.port.bind((a[0], int(a[1])))
+OSError: [Errno 99] Cannot assign requested address
+2024-11-21 13:36:10,504 [ERROR] [Errno 99] Cannot assign requested address
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 19, in __init__
+    self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1938, in mavlink_connection
+    return mavudp(device, source_system=source_system, source_component=source_component, input=input, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1062, in __init__
+    self.port.bind((a[0], int(a[1])))
+OSError: [Errno 99] Cannot assign requested address
+2024-11-21 13:36:12,508 [ERROR] [Errno 99] Cannot assign requested address
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 19, in __init__
+    self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1938, in mavlink_connection
+    return mavudp(device, source_system=source_system, source_component=source_component, input=input, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1062, in __init__
+    self.port.bind((a[0], int(a[1])))
+OSError: [Errno 99] Cannot assign requested address

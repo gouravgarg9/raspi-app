@@ -1,0 +1,39 @@
+2024-11-21 16:33:11,039 [DEBUG] DroneApp has started! Directory ./
+2024-11-21 16:33:16,564 [WARNING] Link timeout, no heartbeat in last 5 seconds
+2024-11-21 16:33:41,579 [ERROR] Exception in MAVLink input loop
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 211, in mavlink_thread_in
+    fn(self)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 1370, in listener
+    raise APIException('No heartbeat in %s seconds, aborting.' %
+dronekit.APIException: No heartbeat in 30 seconds, aborting.
+2024-11-21 16:33:41,598 [ERROR] Timeout in initializing connection.
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 19, in __init__
+    self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3166, in connect
+    vehicle.initialize(rate=rate, heartbeat_timeout=heartbeat_timeout)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 2275, in initialize
+    raise APIException('Timeout in initializing connection.')
+dronekit.APIException: Timeout in initializing connection.
+2024-11-21 16:33:48,640 [WARNING] Link timeout, no heartbeat in last 5 seconds
+2024-11-21 16:34:13,612 [ERROR] Exception in MAVLink input loop
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 211, in mavlink_thread_in
+    fn(self)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 1370, in listener
+    raise APIException('No heartbeat in %s seconds, aborting.' %
+dronekit.APIException: No heartbeat in 30 seconds, aborting.
+2024-11-21 16:34:13,662 [ERROR] Timeout in initializing connection.
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 19, in __init__
+    self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3166, in connect
+    vehicle.initialize(rate=rate, heartbeat_timeout=heartbeat_timeout)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 2275, in initialize
+    raise APIException('Timeout in initializing connection.')
+dronekit.APIException: Timeout in initializing connection.

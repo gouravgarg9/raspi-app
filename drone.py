@@ -8,13 +8,14 @@ class Drone:
     def __init__(self, configurations):
         drone_id      = configurations['drone']['id']
         use_simulator = configurations['drone']['use-simulator'].lower() == 'true'
+        simulator_ip = configurations['drone']['simulator_ip']
         linux_device  = configurations['drone']['linux_device']
         sim_port      = int( configurations['drone']['simulator-port'])
         takeoff_alt   = int( configurations['drone']['takeoff-alt'])
         rtl_alt       = int( configurations['drone']['rtl-alt'])
 
         if use_simulator:
-            rpi_ip = netifaces.ifaddresses('eth0')[netifaces.AF_INET][0]['addr']
+            rpi_ip = simulator_ip
             self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
             logging.info('Connected to Simulator On Port: %s ', str(sim_port))
         else:

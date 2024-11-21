@@ -20,7 +20,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler(APP_DIR + 'logs/video-streamer | ' + str(time.asctime()) + '.log'),
+        logging.FileHandler(APP_DIR + 'logs/ | ' + str(time.asctime()) + '.log'),
         logging.StreamHandler()
     ]
 )

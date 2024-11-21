@@ -1,33 +1,13 @@
 import time, logging
-import RPi.GPIO as GPIO
 from dronekit import VehicleMode, Command
 from engine import Engine
 from servo_controller import ServoController
 from pymavlink import mavutil
 
-DROP_PACKAGE_PIN = 21
-IGNITE_LED_PIN = 2
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
-GPIO.setup(DROP_PACKAGE_PIN,GPIO.OUT)
-GPIO.output(DROP_PACKAGE_PIN,GPIO.HIGH)
-
-GPIO.setup(IGNITE_LED_PIN,GPIO.OUT)
-GPIO.output(IGNITE_LED_PIN,GPIO.HIGH)
-
 class ControlTab:
     def __init__(self, drone):
         self.vehicle = drone.vehicle
         self.drone = drone
-        
-        self.light_state = GPIO.HIGH
-        self.ignitor_state = GPIO.HIGH
-        
-        self.camera_angle = 140 # 60 - Lowest ; 230 Max value;
-        self.servo_camera = ServoController(self.camera_angle)
-        self.servo_camera.start()
         
         self.speed_x = 0
         self.speed_y = 0
@@ -130,32 +110,6 @@ class ControlTab:
                 break
             time.sleep(1)
 
-    def togleLights(self):
-        
-        self.ignitor_state = GPIO.LOW
-        GPIO.output(IGNITE_LED_PIN,GPIO.LOW)
-        time.sleep(1)
-        self.ignitor_state = GPIO.HIGH
-        GPIO.output(IGNITE_LED_PIN,GPIO.HIGH)
-        
-        self.light_state = GPIO.LOW
-        GPIO.output(DROP_PACKAGE_PIN,GPIO.LOW)
-        time.sleep(1)
-        self.light_state = GPIO.HIGH
-        GPIO.output(DROP_PACKAGE_PIN,GPIO.HIGH) 
-
-    def cameraUP(self):
-        if self.camera_angle > 60:
-            self.camera_angle = self.camera_angle - 20
-            self.servo_camera.setAngle(self.camera_angle)
-            logging.debug("Current Camera Angle: %s", str( self.camera_angle))
-
-    def cameraDOWN(self):
-        if self.camera_angle < 220:
-            self.camera_angle = self.camera_angle + 20
-            self.servo_camera.setAngle(self.camera_angle)
-            logging.debug("Current Camera Angle: %s", str( self.camera_angle))
-        
     def cancelMission(self):
         self.vehicle.mode = VehicleMode("GUIDED")
         self.vehicle.commands.next = 0

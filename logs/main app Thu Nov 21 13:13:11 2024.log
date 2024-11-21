@@ -1,0 +1,91 @@
+2024-11-21 13:13:11,084 [DEBUG] DroneApp has started! Directory ./
+2024-11-21 13:13:11,602 [ERROR] Could not configure port: (5, 'Input/output error')
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 380, in _reconfigure_port
+    orig_attr = termios.tcgetattr(self.fd)
+termios.error: (5, 'Input/output error')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 22, in __init__
+    self.vehicle = connect(linux_device, wait_ready=True, baud=57600)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1949, in mavlink_connection
+    return mavserial(device,
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 972, in __init__
+    raise e
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 968, in __init__
+    self.port = serial.Serial(self.device, 1200, timeout=0,
+  File "/usr/lib/python3/dist-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 329, in open
+    self._reconfigure_port(force_update=True)
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 383, in _reconfigure_port
+    raise SerialException("Could not configure port: {}".format(msg))
+serial.serialutil.SerialException: Could not configure port: (5, 'Input/output error')
+2024-11-21 13:13:13,621 [ERROR] Could not configure port: (5, 'Input/output error')
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 380, in _reconfigure_port
+    orig_attr = termios.tcgetattr(self.fd)
+termios.error: (5, 'Input/output error')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 22, in __init__
+    self.vehicle = connect(linux_device, wait_ready=True, baud=57600)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1949, in mavlink_connection
+    return mavserial(device,
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 972, in __init__
+    raise e
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 968, in __init__
+    self.port = serial.Serial(self.device, 1200, timeout=0,
+  File "/usr/lib/python3/dist-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 329, in open
+    self._reconfigure_port(force_update=True)
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 383, in _reconfigure_port
+    raise SerialException("Could not configure port: {}".format(msg))
+serial.serialutil.SerialException: Could not configure port: (5, 'Input/output error')
+2024-11-21 13:13:15,625 [ERROR] Could not configure port: (5, 'Input/output error')
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 380, in _reconfigure_port
+    orig_attr = termios.tcgetattr(self.fd)
+termios.error: (5, 'Input/output error')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gourav/raspi-app/app.py", line 74, in <module>
+    drone = Drone(config)
+  File "/home/gourav/raspi-app/drone.py", line 22, in __init__
+    self.vehicle = connect(linux_device, wait_ready=True, baud=57600)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/__init__.py", line 3159, in connect
+    handler = MAVConnection(ip, baud=baud, source_system=source_system, source_component=source_component, use_native=use_native)
+  File "/usr/local/lib/python3.9/dist-packages/dronekit/mavlink.py", line 130, in __init__
+    self.master = mavutil.mavlink_connection(ip, baud=baud, source_system=source_system, source_component=source_component)
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 1949, in mavlink_connection
+    return mavserial(device,
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 972, in __init__
+    raise e
+  File "/usr/local/lib/python3.9/dist-packages/pymavlink/mavutil.py", line 968, in __init__
+    self.port = serial.Serial(self.device, 1200, timeout=0,
+  File "/usr/lib/python3/dist-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 329, in open
+    self._reconfigure_port(force_update=True)
+  File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 383, in _reconfigure_port
+    raise SerialException("Could not configure port: {}".format(msg))
+serial.serialutil.SerialException: Could not configure port: (5, 'Input/output error')
