@@ -66,7 +66,7 @@ DRONE_ID = config['drone']['id']
 HOST_IP = config['cloud-app']['ip'] 
 DRONE_CLOUD_SERVER_PORT   = int( config['cloud-app']['control-port'])
 MAX_RECONNECTION_ATTEMPTS = int( config['cloud-app']['max-reconnection-attempts'])
-SERVER_CLIENT_PORT = 8080
+SERVER_CLIENT_PORT = "8080"
 if __name__ == '__main__':
     
     while(True):

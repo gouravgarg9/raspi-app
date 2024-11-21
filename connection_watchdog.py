@@ -38,10 +38,11 @@ class ConnectionWatchdog (threading.Thread):
 
     def is_internet_on(self):
         try:
-            urlopen(str('http://' + self.host_ip + ':' + self.host_port), timeout=5)
+            urlopen(str('http://' + self.host_ip + ':' + self.host_port + '/'), timeout=5)
             self.net_status = True
             return True
         except: 
             logging.error('ConnectionWatchdog - Network is unreachable: ', exc_info=True)
             self.net_status = False
             return False
+	
