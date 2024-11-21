@@ -1,5 +1,0 @@
-2024-11-20 15:05:51,319 [INFO] FPS: 13 Quality: 80 Width 512 Height 352 Grayscale: False
-2024-11-20 15:05:51,320 [INFO] Drone ID: 1 Video Recipient: 34.131.79.224:1313
-2024-11-20 15:05:52,061 [INFO] Camera module initiated and socket opened, Video Streaming started
-2024-11-20 15:25:59,442 [ERROR] Video Stream Ended: [Errno 101] Network is unreachable
-2024-11-20 15:25:59,446 [INFO] Stream ended and resources released

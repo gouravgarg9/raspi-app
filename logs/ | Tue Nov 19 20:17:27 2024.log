@@ -1,4 +1,0 @@
-2024-11-19 20:17:27,898 [INFO] FPS: 13 Quality: 80 Width 512 Height 352 Grayscale: False
-2024-11-19 20:17:27,898 [INFO] Drone ID: 1 Video Recipient: 192.168.0.102:1313
-2024-11-19 20:17:28,621 [INFO] Camera module initiated and socket opened, Video Streaming started
-2024-11-19 20:17:39,174 [INFO] Stream ended and resources released
