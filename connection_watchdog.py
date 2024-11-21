@@ -3,11 +3,12 @@ from urllib.request import urlopen
 
 class ConnectionWatchdog (threading.Thread):
 
-    def __init__(self, drone, host_ip, max_reconnection_attempts):
+    def __init__(self, drone, host_ip, host_port, max_reconnection_attempts):
         threading.Thread.__init__(self)
         self.daemon = True
         self.drone = drone
         self.host_ip = host_ip
+        self.host_port = host_port
         self.max_reconnection_attempts = max_reconnection_attempts
         self.connection_attempts = 0
         self.net_status = False
@@ -37,7 +38,7 @@ class ConnectionWatchdog (threading.Thread):
 
     def is_internet_on(self):
         try:
-            urlopen(str('http://' + self.host_ip), timeout=5)
+            urlopen(str('http://' + self.host_ip + ':' + self.host_port), timeout=5)
             self.net_status = True
             return True
         except: 

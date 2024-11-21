@@ -66,7 +66,7 @@ DRONE_ID = config['drone']['id']
 HOST_IP = config['cloud-app']['ip'] 
 DRONE_CLOUD_SERVER_PORT   = int( config['cloud-app']['control-port'])
 MAX_RECONNECTION_ATTEMPTS = int( config['cloud-app']['max-reconnection-attempts'])
-
+SERVER_CLIENT_PORT = 8080
 if __name__ == '__main__':
     
     while(True):
@@ -77,7 +77,7 @@ if __name__ == '__main__':
             logging.error(str(e), exc_info=True)
             time.sleep(2)
     
-    watchdog = ConnectionWatchdog(drone, HOST_IP, MAX_RECONNECTION_ATTEMPTS)
+    watchdog = ConnectionWatchdog(drone, HOST_IP, SERVER_CLIENT_PORT, MAX_RECONNECTION_ATTEMPTS)
     watchdog.start()
 
     video_streamer_proc = None
@@ -99,7 +99,7 @@ if __name__ == '__main__':
             control_server_socket.send(droneIdBytes)
             logging.info('Drone ID: %s Connected To Control Server Endpoint: %s:%s', str(DRONE_ID), HOST_IP, str(DRONE_CLOUD_SERVER_PORT))
     
-            video_streamer_proc = Popen('/usr/bin/python3 ' + APP_DIR + 'video_streamer.py', shell=True)
+            video_streamer_proc = Popen('/usr/bin/python3 ' + APP_DIR + 'streamer.py', shell=True)
             
             server_message_receiver = DataReceiver(control_server_socket, drone)
             server_message_receiver.start()
