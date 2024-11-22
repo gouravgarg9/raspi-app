@@ -30,9 +30,10 @@ This repository contains a Python-based application for managing Unmanned Aerial
 
 ## Running in Local:
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/gouravgarg9/raspi-app.git
-   ```
+```bash
+git clone https://github.com/gouravgarg9/raspi-app.git
+```
+
 2. Install the modules:
 ```bash
 sudo apt update
