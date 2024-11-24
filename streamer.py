@@ -47,7 +47,11 @@ logging.info("FPS: %s Quality: %s Width %s Height %s Grayscale: %s",
     str(FRAMES_PER_SECOND), str(JPEG_QUALITY), str(WIDTH), str(HEIGHT), GRAYSCALE)
 logging.info("Drone ID: %s Video Recipient: %s:%s", str(DRONE_ID), str(HOST_IP), str(VIDEO_PORT))
 # OpenCV VideoCapture for USB camera (camera index 0 is usually the default USB camera)
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(cv2.CAP_V4L2)
+
+# gst_pipeline = "v4l2src device=/dev/video0 ! videoconvert ! appsink"
+# gst_pipeline = "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),format=NV12,width=1280,height=720,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert ! video/x-raw,format=BGR ! appsink drop=1"
+# camera = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
 
 # Check if the camera was successfully opened
 if not camera.isOpened():
@@ -78,7 +82,7 @@ try:
             break
 
         # Rotate the frame 180 degrees (as in original code)
-        frame = cv2.rotate(frame, cv2.ROTATE_180)
+        # frame = cv2.rotate(frame, cv2.ROTATE_180)
 
         # If grayscale is enabled, convert the frame to grayscale
         if GRAYSCALE:

@@ -1,7 +1,6 @@
 import time, logging
 from dronekit import VehicleMode, Command
 from engine import Engine
-from servo_controller import ServoController
 from pymavlink import mavutil
 
 class ControlTab:
