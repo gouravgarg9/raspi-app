@@ -2,7 +2,7 @@ import time, logging, netifaces
 from dronekit import connect, VehicleMode, Command
 import ProtoData_pb2 as proto
 from control_tab import ControlTab
-
+from arduino_reader import read_sensors
 
 class Drone:
     def __init__(self, configurations):
@@ -33,34 +33,22 @@ class Drone:
 
     def getDroneDataSerialized(self):
         drone_data = proto.DroneData()
-
-        if self.vehicle.location.global_relative_frame.alt != None:
-          drone_data.altitude = self.vehicle.location.global_relative_frame.alt
-        #else :
-          #drone_data.altitude = 1
-
-        if self.vehicle.location.global_relative_frame.lat != None:		  
-          drone_data.latitude = self.vehicle.location.global_relative_frame.lat
-        #else :
-          #drone_data.latitude = 1
-
-        if self.vehicle.location.global_relative_frame.lon != None:		  
-          drone_data.longitude = self.vehicle.location.global_relative_frame.lon
-        #else :
-          #drone_data.longitude = 1
-
-        if self.vehicle.battery.voltage != None:
-          drone_data.voltage = self.vehicle.battery.voltage
-        #else :
-          #drone_data.voltage = 1
-
-        if self.vehicle.airspeed != None:
-          drone_data.speed = float(self.vehicle.airspeed)
-        #else :
-          #drone_data.speed = 1
-
+        sensor_values = read_sensors()
+        
+        drone_data.altitude = self.vehicle.location.global_relative_frame.alt or 1
+        drone_data.latitude = self.vehicle.location.global_relative_frame.lat or 1
+        drone_data.longitude = self.vehicle.location.global_relative_frame.lon or 1
+        drone_data.voltage = self.vehicle.battery.voltage or 1
+        drone_data.speed = float(self.vehicle.airspeed) or 1
         drone_data.state = self.state
         drone_data.drone_id = str(self.drone_id)
+        
+        
+        # Adding sensor data
+        if sensor_values:
+            drone_data.mq135 = sensor_values["MQ135"]
+            drone_data.mq2 = sensor_values["MQ2"]
+            drone_data.distance = sensor_values["Distance"]
 
         return drone_data.SerializeToString() 
         
