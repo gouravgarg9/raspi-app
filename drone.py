@@ -82,6 +82,7 @@ class Drone:
         if command.code == 7:
             self.control_tab.goHome(self.rtl_alt)
             logging.debug('Executing Code: %s for Command: %s', str(command.code), 'Go Home')
+            self.state = "HOME"
             return
         if command.code == 8:
             self.togleLights()

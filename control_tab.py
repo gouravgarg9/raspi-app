@@ -74,9 +74,11 @@ class ControlTab:
         self.vehicle.armed = True
         time.sleep(1)
     
-        while not self.vehicle.armed:
-            logging.debug('self.vehicle.armed: '+str(self.vehicle.armed))
+        count = 10
+        while not self.vehicle.armed and count > 0:
+            logging.debug('self.vehicle.armed: ' + str(self.vehicle.armed))
             self.vehicle.armed = True
+            count -= 1  # Decrement the count
             time.sleep(1)
         
         self.vehicle.simple_takeoff(takeoff_alt)
@@ -108,7 +110,7 @@ class ControlTab:
                 self.vehicle.mode = VehicleMode("RTL")
                 break
             time.sleep(1)
-
+	
     def cancelMission(self):
         self.vehicle.mode = VehicleMode("GUIDED")
         self.vehicle.commands.next = 0
