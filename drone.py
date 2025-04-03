@@ -31,8 +31,14 @@ class Drone:
         
 
     def getDroneDataSerialized(self):
+        
+        logging.info("Data requested")
         drone_data = proto.DroneData()
         sensor_values = read_sensors()
+        
+        
+        logging.info(sensor_values)
+        
         
         drone_data.altitude = self.vehicle.location.global_relative_frame.alt or 1
         drone_data.latitude = self.vehicle.location.global_relative_frame.lat or 1
@@ -52,7 +58,7 @@ class Drone:
         
         
         # Well-formatted print statement
-        print(f"""
+        logging.info(f"""
         Drone ID    : {drone_data.drone_id}
         State       : {drone_data.state}
         Location    : Lat {drone_data.latitude}, Lon {drone_data.longitude}, Alt {drone_data.altitude}m
