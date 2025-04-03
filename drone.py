@@ -8,19 +8,18 @@ class Drone:
     def __init__(self, configurations):
         drone_id      = configurations['drone']['id']
         use_simulator = configurations['drone']['use-simulator'].lower() == 'true'
-        simulator_ip = configurations['drone']['simulator_ip']
-        linux_device  = configurations['drone']['linux_device']
-        sim_port      = int( configurations['drone']['simulator-port'])
+        rpi_ip = configurations['drone']['simulator_ip']
+        uav_device  = configurations['drone']['linux_device']
+        rpi_sim_port      = int( configurations['drone']['simulator-port'])
         takeoff_alt   = int( configurations['drone']['takeoff-alt'])
         rtl_alt       = int( configurations['drone']['rtl-alt'])
 
         if use_simulator:
-            rpi_ip = simulator_ip
-            self.vehicle = connect(rpi_ip + ":" + str(sim_port),  baud=57600, wait_ready=True)
-            logging.info('Connected to Simulator On Port: %s ', str(sim_port))
+            self.vehicle = connect(rpi_ip + ":" + str(rpi_sim_port),  baud=57600, wait_ready=True)
+            logging.info('Connected to Simulator On Port: %s ', str(rpi_sim_port))
         else:
-            self.vehicle = connect(linux_device, wait_ready=True, baud=57600)
-            logging.info('Connected to Flight Controller Hardware on:  %s ', linux_device)
+            self.vehicle = connect(uav_device, wait_ready=True, baud=57600)
+            logging.info('Connected to Flight Controller Hardware on:  %s ', uav_device)
             
         self.drone_id = drone_id
         self.takeoff_alt = takeoff_alt
@@ -50,6 +49,20 @@ class Drone:
             drone_data.mq2 = sensor_values["MQ2"]
             drone_data.distance = sensor_values["Distance"]
 
+        
+        
+        # Well-formatted print statement
+        print(f"""
+        Drone ID    : {drone_data.drone_id}
+        State       : {drone_data.state}
+        Location    : Lat {drone_data.latitude}, Lon {drone_data.longitude}, Alt {drone_data.altitude}m
+        Voltage     : {drone_data.voltage}V
+        Speed       : {drone_data.speed} m/s
+        Sensors     : MQ135: {drone_data.mq135}, MQ2: {drone_data.mq2}, Distance: {drone_data.distance}m
+        """)
+    
+    
+    
         return drone_data.SerializeToString() 
         
     def freeze(self):
