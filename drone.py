@@ -171,7 +171,10 @@ class Drone:
             logging.debug('Executing Code: %s for Command: %s', str(command.code), 'Stop Vertical Movement')
             return
         if command.code == 14:
+            self.state = "ON MISSION"
             self.control_tab.activateMission(command.data)
+            logging.debug('Executing Code: %s for Command: %s', str(command.code), 'Activate Mission')
+            return
         if command.code == 6:
             self.state = "MISSION CANCEL"
             self.control_tab.cancelMission()
