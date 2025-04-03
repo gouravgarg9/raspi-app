@@ -8,9 +8,9 @@ class Drone:
     def __init__(self, configurations):
         drone_id      = configurations['drone']['id']
         use_simulator = configurations['drone']['use-simulator'].lower() == 'true'
-        rpi_ip = configurations['drone']['simulator_ip']
-        uav_device  = configurations['drone']['linux_device']
-        rpi_sim_port      = int( configurations['drone']['simulator-port'])
+        rpi_ip = configurations['drone']['rpi_ip']
+        uav_device  = configurations['drone']['uav_device']
+        rpi_sim_port      = int( configurations['drone']['rpi_sim_port'])
         takeoff_alt   = int( configurations['drone']['takeoff-alt'])
         rtl_alt       = int( configurations['drone']['rtl-alt'])
 
