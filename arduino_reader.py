@@ -1,6 +1,6 @@
 import serial
 
-arduino = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)  # Change to your port
+arduino = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Change to your port
 
 def read_sensors():
     try:
