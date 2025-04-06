@@ -2,15 +2,8 @@ import cv2
 import numpy as np
 import tflite_runtime.interpreter as tflite
 import socket
-import RPi.GPIO as GPIO
 import time
-
-# Set up ultrasonic sensor
-TRIG = 23
-ECHO = 24
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
+from arduino_reader import read_sensors
 
 # Load TensorFlow Lite model
 interpreter = tflite.Interpreter(model_path="detect.tflite")
@@ -23,23 +16,14 @@ PORT = 5005
 
 def measure_distance():
     """Measures distance using ultrasonic sensor."""
-    GPIO.output(TRIG, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG, False)
+    data = read_sensors()
+    return float(data["Distance"])
     
-    start_time, end_time = 0, 0
-    while GPIO.input(ECHO) == 0:
-        start_time = time.time()
-    while GPIO.input(ECHO) == 1:
-        end_time = time.time()
-    
-    return (end_time - start_time) * 17150  # Convert time to cm
-
 def detect_objects():
     """Detects obstacles using the camera and TensorFlow Lite model."""
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
-    cap.release()
+    cap.release()   
     
     if not ret:
         return None

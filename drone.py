@@ -31,14 +31,8 @@ class Drone:
         
 
     def getDroneDataSerialized(self):
-        
-        logging.info("Data requested")
         drone_data = proto.DroneData()
         sensor_values = read_sensors()
-        
-        
-        logging.info(sensor_values)
-        
         
         drone_data.altitude = self.vehicle.location.global_relative_frame.alt or 1
         drone_data.latitude = self.vehicle.location.global_relative_frame.lat or 1
@@ -47,27 +41,10 @@ class Drone:
         drone_data.speed = float(self.vehicle.airspeed) or 1
         drone_data.state = self.state
         drone_data.drone_id = str(self.drone_id)
-        
-        
-        # Adding sensor data
         if sensor_values:
             drone_data.mq135 = sensor_values["MQ135"]
             drone_data.mq2 = sensor_values["MQ2"]
             drone_data.distance = sensor_values["Distance"]
-
-        
-        
-        # Well-formatted print statement
-        logging.info(f"""
-        Drone ID    : {drone_data.drone_id}
-        State       : {drone_data.state}
-        Location    : Lat {drone_data.latitude}, Lon {drone_data.longitude}, Alt {drone_data.altitude}m
-        Voltage     : {drone_data.voltage}V
-        Speed       : {drone_data.speed} m/s
-        Sensors     : MQ135: {drone_data.mq135}, MQ2: {drone_data.mq2}, Distance: {drone_data.distance}m
-        """)
-    
-    
     
         return drone_data.SerializeToString() 
         
@@ -171,7 +148,10 @@ class Drone:
             logging.debug('Executing Code: %s for Command: %s', str(command.code), 'Stop Vertical Movement')
             return
         if command.code == 14:
+            self.state = "ON MISSION"
             self.control_tab.activateMission(command.data)
+            logging.debug('Executing Code: %s for Command: %s', str(command.code), 'Activate Mission')
+            return
         if command.code == 6:
             self.state = "MISSION CANCEL"
             self.control_tab.cancelMission()
