@@ -8,6 +8,7 @@ import numpy as np
 import cv2
 from picamera2 import Picamera2
 from utils import Utils
+import threading
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-d', nargs=1, default=None)
@@ -55,6 +56,9 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect((HOST_IP, VIDEO_PORT))
 logging.info("Socket opened, Video Streaming started")
 
+latest_jpeg = None
+latest_jpeg_lock = threading.Lock()
+
 time.sleep(2)  # Allow camera to warm up
 
 try:
@@ -64,8 +68,13 @@ try:
         
         if GRAYSCALE:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        
+
         _, jpg_buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])
+        
+        # Store for local clients
+        with latest_jpeg_lock:
+            latest_jpeg = jpg_buffer.tobytes()
+
         
         datagramMsgBytes = Utils.create_datagram_message(DRONE_ID, jpg_buffer)
         sock.sendall(datagramMsgBytes)
@@ -77,3 +86,39 @@ finally:
     picam2.stop()
     sock.close()
 
+
+LOCAL_IP = "127.0.0.1"
+LOCAL_PORT = 5006
+
+def local_video_streamer(client_socket):
+    logging.info("Local client connected from %s", client_socket.getpeername())
+    try:
+        while True:
+            if 'latest_jpeg' in globals():
+                with latest_jpeg_lock:
+                    data = latest_jpeg
+                    if data is None:
+                        continue
+
+
+                length = len(data)
+                client_socket.sendall(length.to_bytes(4, byteorder='big') + data)
+                time.sleep(1 / FRAMES_PER_SECOND)
+    except Exception as e:
+        logging.warning(f"Local client disconnected: {e}")
+    finally:
+        client_socket.close()
+
+def start_local_tcp_server():
+    tcp_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    tcp_server.bind((LOCAL_IP, LOCAL_PORT))
+    tcp_server.listen(5)
+    logging.info(f"Local TCP server started at {LOCAL_IP}:{LOCAL_PORT}")
+    
+    while True:
+        client, _ = tcp_server.accept()
+        threading.Thread(target=local_video_streamer, args=(client,), daemon=True).start()
+        
+tcp_thread = threading.Thread(target=start_local_tcp_server, daemon=True)
+tcp_thread.start()
