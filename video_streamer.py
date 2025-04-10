@@ -41,21 +41,18 @@ JPEG_QUALITY = int(config['video']['quality'])
 WIDTH = int(config['video']['width'])
 HEIGHT = int(config['video']['height'])
 
-logging.info("FPS: %s Quality: %s Width %s Height %s Grayscale: %s", 
-             str(FRAMES_PER_SECOND), str(JPEG_QUALITY), str(WIDTH), str(HEIGHT), GRAYSCALE)
-logging.info("Drone ID: %s Video Recipient: %s:%s", str(DRONE_ID), str(HOST_IP), str(VIDEO_PORT))
-
 # Initialize Picamera2
 picam2 = Picamera2()
 picam2.configure(picam2.create_video_configuration(main={"size": (WIDTH, HEIGHT)}))
 picam2.start()
 logging.info("Camera module initiated")
+logging.info("FPS: %s Quality: %s Width %s Height %s Grayscale: %s", str(FRAMES_PER_SECOND), str(JPEG_QUALITY), str(WIDTH), str(HEIGHT), GRAYSCALE)
+time.sleep(2)  # Allow camera to warm up
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.connect((HOST_IP, VIDEO_PORT))
+logging.info("Drone ID: %s Video Recipient: %s:%s", str(DRONE_ID), str(HOST_IP), str(VIDEO_PORT))
 logging.info("Socket opened, Video Streaming started")
-
-time.sleep(2)  # Allow camera to warm up
 
 try:
     while True:
