@@ -98,6 +98,9 @@ if __name__ == '__main__':
             droneIdBytes = Utils.createNetworkMessage(str.encode(DRONE_ID))
             control_server_socket.send(droneIdBytes)
             logging.info('Drone ID: %s Connected To Control Server Endpoint: %s:%s', str(DRONE_ID), HOST_IP, str(DRONE_CLOUD_SERVER_PORT))
+            init_msg = Utils.createNetworkMessage(drone.getDroneDataSerialized())
+            control_server_socket.send(init_msg)
+            logging.info("Initial drone status sent immediately to server")
            
             server_message_receiver = DataReceiver(control_server_socket, drone)
             server_message_receiver.start()
