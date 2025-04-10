@@ -86,8 +86,8 @@ if __name__ == '__main__':
     
     while drone.is_active:
         try:
-            while not watchdog.net_status:
-                time.sleep(1)
+            # while not watchdog.net_status:
+                # time.sleep(1)
             
             time.sleep(3)
             
@@ -98,12 +98,14 @@ if __name__ == '__main__':
             droneIdBytes = Utils.createNetworkMessage(str.encode(DRONE_ID))
             control_server_socket.send(droneIdBytes)
             logging.info('Drone ID: %s Connected To Control Server Endpoint: %s:%s', str(DRONE_ID), HOST_IP, str(DRONE_CLOUD_SERVER_PORT))
+            
             video_streamer_proc = Popen('/usr/bin/python3 ' + APP_DIR + 'video_streamer.py', shell=True)
+            
             server_message_receiver = DataReceiver(control_server_socket, drone)
             server_message_receiver.start()
             
-            while watchdog.net_status and drone.is_active:
-            # while drone.is_active:
+            # while watchdog.net_status and drone.is_active:
+            while drone.is_active:
                 msg = Utils.createNetworkMessage(drone.getDroneDataSerialized())
                 control_server_socket.send(msg)
                 time.sleep(1)

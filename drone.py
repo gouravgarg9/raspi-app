@@ -41,10 +41,9 @@ class Drone:
         drone_data.speed = float(self.vehicle.airspeed) or 1
         drone_data.state = self.state
         drone_data.drone_id = str(self.drone_id)
-        if sensor_values:
-            drone_data.mq135 = sensor_values["MQ135"]
-            drone_data.mq2 = sensor_values["MQ2"]
-            drone_data.distance = sensor_values["Distance"]
+        drone_data.mq135 = sensor_values["MQ135"] or 1
+        drone_data.mq2 = sensor_values["MQ2"] or 1
+        drone_data.distance = sensor_values["Distance"] or 1
     
         return drone_data.SerializeToString() 
         
