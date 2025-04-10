@@ -153,7 +153,7 @@ class ControlTab:
             self.armAndTakeoff( self.drone.takeoff_alt)
 
         """ Uses path planner to generate a mission path and starts execution. """
-        points_data = [(float(point.latitude), float(point.longitude)) for point in command_data.point]
+        points_data = [(float(point.longitude), float(point.latitude)) for point in command_data.point]
         boundary = PathPlanner.construct_boundary(points_data)
         path = PathPlanner.boustrophedon_coverage(boundary)
         
