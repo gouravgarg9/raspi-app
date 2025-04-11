@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from shapely.geometry import Polygon, Point
+from shapely.geometry import Polygon, Point, LineString
 
 class PathPlanner:
     def __init__(self, resolution=1):
@@ -49,7 +49,7 @@ class PathPlanner:
         return []  # No path found
     
     # Boustrophedon Coverage Planning (Zigzag)
-    def boustrophedon_coverage(boundary, step_size=5):
+    def boustrophedon_coverage(boundary, step_size=0.0002):
         """
         Generates a boustrophedon coverage path inside an arbitrary polygon.
 
@@ -68,9 +68,8 @@ class PathPlanner:
         direction = 1  # Left-to-right or right-to-left movement
 
         for lat in np.arange(lat_min, lat_max, step_size):
-            row_path = []
-
-            # Generate candidate points for the current row
+        	# Generate candidate points for the current row
+       	    row_path = []
             for lon in np.arange(lon_min, lon_max, step_size):
                 point = Point(lon, lat)
                 if polygon.contains(point):

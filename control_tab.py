@@ -160,10 +160,6 @@ class ControlTab:
         if not path:
             logging.error("Path planning failed!")
             return
-        
-        start = path[0]
-        goal = path[-1]
-        obstacles = set()
 
         points_data = {"point": [{"latitude": lat, "longitude": lon, "altitude": 10} for lat, lon in path]}
         
@@ -181,53 +177,6 @@ class ControlTab:
         cmds.upload()
         
         self.vehicle.mode = VehicleMode("AUTO")
-
-        if obstacle_process is None:
-            obstacle_process = subprocess.Popen(["python3", "obstacle_detection.py"])
-
-        # Connect to the obstacle detection service
-        client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        client.bind(("127.0.0.1", 5005))
-
-        # Iterate through the points in points_data to move the drone
-        for point in points_data["point"]:
-            # Send waypoint command to the drone (using MAVLink, already done above)
-
-            # Check for obstacle detection
-            client.settimeout(0.1)  # Timeout after 100ms
-            try:
-                data, _ = client.recvfrom(1024)
-                if data.decode() == "OBSTACLE":
-                    print("Obstacle detected! Recalculating path...")
-
-                    # Stop drone at current position (stay at the current point)
-                    current_lat = self.vehicle.location.global_relative_frame.lat
-                    current_lon = self.vehicle.location.global_relative_frame.lon
-                    current_alt = self.vehicle.location.global_relative_frame.alt
-                    self.vehicle.simple_goto(current_lat, current_lon, current_alt)  # Drone stays stationary
-
-                    obstacles = set([(current_lat, current_lon)])  # Add current position as obstacle
-                    new_path = PathPlanner.a_star(start, goal, obstacles)  # Recalculate path using A* (lat/lon)
-                    if new_path:
-                        path = new_path  # Update the path
-
-                        # Convert new path to points_data for drone commands
-                        points_data = {"point": [{"latitude": lat, "longitude": lon, "altitude": 10} for lat, lon in path]}
-
-                        # Re-send commands based on the new path
-                        cmds.clear()  # Clear previous commands
-                        for point in points_data["point"]:
-                            cmds.add(Command(0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, 
-                                             mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, 
-                                             float(point["latitude"]), float(point["longitude"]), float(point["altitude"])))
-                        cmds.upload()
-
-            except socket.timeout:
-                pass  # No obstacle detected, continue with the current path
-            
-            # Send current point's command to the drone (execute movement)
-            print(f"Moving to {point['latitude']}, {point['longitude']}")
-            time.sleep(1)  # Simulate drone movement (adjust this for real drone movement)
         
     def land(self):
         logging.info("Landing")
