@@ -86,8 +86,8 @@ if __name__ == '__main__':
     
     while drone.is_active:
         try:
-            # while not watchdog.net_status:
-                # time.sleep(1)
+            while not watchdog.net_status:
+                time.sleep(1)
             
             time.sleep(3)
             
@@ -104,8 +104,9 @@ if __name__ == '__main__':
             server_message_receiver = DataReceiver(control_server_socket, drone)
             server_message_receiver.start()
             
-            # while watchdog.net_status and drone.is_active:
-            while drone.is_active:
+            while watchdog.net_status and drone.is_active:
+            # while drone.is_active:
+                logging.info(drone.getDroneDataSerialized())
                 msg = Utils.createNetworkMessage(drone.getDroneDataSerialized())
                 control_server_socket.send(msg)
                 time.sleep(1)
