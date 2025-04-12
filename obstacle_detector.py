@@ -3,7 +3,6 @@ import numpy as np
 import tflite_runtime.interpreter as tflite
 import socket
 import time
-from arduino_reader import read_sensors
 
 # Load TensorFlow Lite model
 interpreter = tflite.Interpreter(model_path="detect.tflite")
@@ -16,7 +15,7 @@ PORT = 5005
 
 def measure_distance():
     """Measures distance using ultrasonic sensor."""
-    data = read_sensors()
+    data = {"Distance": 20}
     return float(data["Distance"])
     
 def detect_objects():

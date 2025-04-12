@@ -33,7 +33,6 @@ class Drone:
     def getDroneDataSerialized(self):
         drone_data = proto.DroneData()
         sensor_values = read_sensors()
-        
         drone_data.altitude = self.vehicle.location.global_relative_frame.alt or 1
         drone_data.latitude = self.vehicle.location.global_relative_frame.lat or 1
         drone_data.longitude = self.vehicle.location.global_relative_frame.lon or 1
@@ -44,9 +43,8 @@ class Drone:
         drone_data.mq135 = sensor_values["MQ135"] or 1
         drone_data.mq2 = sensor_values["MQ2"] or 1
         drone_data.distance = sensor_values["Distance"] or 1
-    
-        return drone_data.SerializeToString() 
-        
+        return drone_data.SerializeToString()
+            
     def freeze(self):
         logging.info('Freezing in a spot')
         self.control_tab.stopMovement()
