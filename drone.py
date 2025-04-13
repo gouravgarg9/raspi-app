@@ -3,6 +3,7 @@ from dronekit import connect, VehicleMode, Command
 import ProtoData_pb2 as proto
 from control_tab import ControlTab
 from arduino_reader import read_sensors
+from logger import init_logger, log_data
 
 class Drone:
     def __init__(self, configurations):
@@ -13,6 +14,7 @@ class Drone:
         rpi_sim_port      = int( configurations['drone']['rpi_sim_port'])
         takeoff_alt   = int( configurations['drone']['takeoff-alt'])
         rtl_alt       = int( configurations['drone']['rtl-alt'])
+        self.logging_data_to_csv = configurations['drone']['logging_data_to_csv'].lower() == 'true'
 
         if use_simulator:
             self.vehicle = connect(rpi_ip + ":" + str(rpi_sim_port),  baud=57600, wait_ready=True)
@@ -28,6 +30,7 @@ class Drone:
         self.is_active =True
         self.control_tab = ControlTab(self)
         logging.info("Drone connected")
+        init_logger()
         
 
     def getDroneDataSerialized(self):
@@ -45,6 +48,17 @@ class Drone:
         drone_data.distance = sensor_values["Distance"] or 1
         drone_data.temperature = sensor_values["Temperature"] or 1
         drone_data.humidity = sensor_values["Humidity"] or 1
+        if self.logging_data_to_csv :
+            log_data(
+                drone_data.latitude,
+                drone_data.longitude,
+                drone_data.speed,
+                drone_data.altitude,
+                drone_data.mq135_value,
+                drone_data.mq2_value,
+                drone_data.temperature,
+                drone_data.humidity,
+            )
         return drone_data.SerializeToString()
             
     def freeze(self):
