@@ -22,15 +22,17 @@ def read_sensors():
                 return None
 
             parts = data.split(",")
-            if len(parts) != 3:
+            if len(parts) != 5:
                 logging.warning("Unexpected data format: %s", data)
                 return None
 
             mq135 = int(parts[0])
             mq2 = int(parts[1])
             distance = float(parts[2])
+            temperature = float(parts[3])
+            humidity = float(parts[4])
 
-            return {"MQ135": mq135, "MQ2": mq2, "Distance": distance}
+            return {"MQ135": mq135, "MQ2": mq2, "Distance": distance, "Temperature": temperature, "Humidity": humidity}
         else:
             # No data in buffer; avoid blocking
             return None
