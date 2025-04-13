@@ -9,8 +9,7 @@ def init_logger():
         with open(logfile, 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([
-                'timestamp', 'latitude', 'longitude', 'speed', 'alt',
-                'battery', 'mq135', 'mq2', 'temperature', 'humidity', 'distance'
+                'timestamp', 'latitude', 'longitude', 'speed', 'alt', 'mq135', 'mq2', 'temperature', 'humidity'
             ])
 
 def log_data(lat, lon, speed, alt, mq135, mq2, temp, hum):

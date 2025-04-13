@@ -3,7 +3,7 @@ from dronekit import connect, VehicleMode, Command
 import ProtoData_pb2 as proto
 from control_tab import ControlTab
 from arduino_reader import read_sensors
-from logger import init_logger, log_data
+from data_logger import init_logger, log_data
 
 class Drone:
     def __init__(self, configurations):
@@ -54,8 +54,8 @@ class Drone:
                 drone_data.longitude,
                 drone_data.speed,
                 drone_data.altitude,
-                drone_data.mq135_value,
-                drone_data.mq2_value,
+                drone_data.mq135,
+                drone_data.mq2,
                 drone_data.temperature,
                 drone_data.humidity,
             )
