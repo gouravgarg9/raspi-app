@@ -1,69 +1,95 @@
 # Raspi-App: Onboard UAV Application
 
 ## Overview
-This repository contains a Python-based application for managing Unmanned Aerial Vehicles (UAVs) on Raspberry Pi. The application integrates several key features to ensure efficient UAV operation, including live video feed transmission, server connectivity, and autonomous behavior in case of disconnection.
+This repository contains a Python-based onboard UAV application for **Raspberry Pi** that handles real-time video streaming, autonomous flight, environmental sensing, and robust server communication. It enables UAVs to function intelligently in both connected and disconnected modes, supporting real-world operations like surveillance, air quality monitoring, and threat detection.
 
-## Features
-1. **Live Video Feed Transmission:**
-   - Streams the UAV's video feed to a remote server using WebSocket.
-   - Efficiently processes video frames using OpenCV.
-   - TensorFlow Lite is utilized for extracting valuable insights from the feed.
+## Key Features
 
-2. **Efficient Protocols and Resource Management:**
-   - Uses Google Protocol Buffers (Protobuf) for optimized data serialization and transmission.
-   - Employs multiprocessing and multithreading for task management:
-     - Separate processes for video streaming and model execution.
-     - Dedicated threads for data transmission and reception.
+### 1. 📹 Live Video Feed & Inference
+- Uses **Picamera v2.1** for high-quality onboard video capture.
+- Streams video to a remote server using **WebSocket**.
+- Integrates **TensorFlow Lite** for real-time object detection and inference on edge.
 
-3. **Autonomous Behavior:**
-   - Implements a watchdog mechanism to monitor server availability:
-     - Freezes the UAV and initiates a Return to Launch (RTL) in case of disconnection.
+### 2. 📦 Efficient Protocols & Resource Optimization
+- Implements **Google Protocol Buffers (Protobuf)** for efficient data transmission.
+- Utilizes **multiprocessing** and **multithreading**:
+  - Separate processes for video capture, inference, and telemetry.
+  - Threads manage Bluetooth, serial, and WebSocket communication without blocking each other.
 
-4. **Control and Communication:**
-   - Sends control commands to the Pixhawk flight controller using Dronekit and MAVLink.
-   - Easily integrates with simulators, protocols, and UAVs through a modular architecture.
+### 3. 🧭 Autonomous UAV Navigation
+- Supports **autonomous path planning** within a defined GPS boundary.
+- Includes **obstacle avoidance** using ultrasonic sensors.
+- Enables **fail-safe RTL (Return to Launch)** if server communication is lost.
 
-5. **Raspberry Pi Optimization:**
-   - Designed for efficient use of onboard computational resources.
-   - Provides onboard computational capabilities, reducing server dependency.
+### 4. 🌡️ Environmental Sensing via Arduino
+- Connected via **`/dev/ttyAMA0`** serial port.
+- Sensors included:
+  - **MQ-135 & MQ-2** for air quality and gas detection.
+  - **DHT11** for temperature and humidity monitoring.
+  - **Ultrasonic Sensor** for obstacle avoidance.
 
+### 5. 📊 Dataset Logging
+- Automatically logs sensor and GPS data into a `.csv` file:
+  - Attributes: `timestamp`, `longitude`, `latitude`, `speed`, `altitude`, `mq-135`, `mq-2`, `temperature`, `humidity`.
+- Useful for **training machine learning models**, **research**, and **analytics**.
 
-## Running in Local:
-1. Clone the repository:
+### 6. 📡 Drone Communication
+- Communicates with **Pixhawk** using **DroneKit** and **MAVLink**.
+- Fully compatible with simulators and modular for different flight stacks.
+
+### 7. 🧠 Edge Intelligence
+- Onboard inference enables decision-making without needing constant server access.
+- Supports future expansion to swarming and collaborative UAV missions.
+
+---
+
+## 🛠 Installation & Setup
+
+### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/gouravgarg9/raspi-app.git
+cd raspi-app
 ```
-
-2. Install the modules:
+### Step2: Install Dependencies
 ```bash
 sudo apt update
-sudo apt install libhdf5-dev libhdf5-serial-dev libatlas-base-devl libjasper-dev libqt5gui5 \
-qtbase5-dev opencv-contrib-python==4.5.5
 
+# Core dependencies
+sudo apt install -y libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev \
+qtbase5-dev libqt5gui5 opencv-contrib-python==4.5.5
+
+# Camera & vision packages
 sudo apt install -y build-essential cmake git pkg-config libjpeg-dev libtiff-dev libpng-dev \
 libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev \
 libfontconfig1-dev libcairo2-dev libgdk-pixbuf2.0-dev libpango1.0-dev libgtk2.0-dev \
 libgtk-3-dev libatlas-base-dev gfortran python3-dev
 
-sudo pip install --default-timeout=100 --no-cache-dir netifaces psutil google-api-python-client wiringpi dronekit
+# Python packages
+sudo pip3 install --default-timeout=100 --no-cache-dir \
+netifaces psutil google-api-python-client wiringpi dronekit pyserial
 ```
-3. Run the application:
+### Step 3: Enable PiCamera
+```bash
+sudo raspi-config
+# Interface Options > Camera > Enable
+```
+## 🚀 Running the Application
 ```bash
 sudo python3 app.py
 ```
 
-
-4. To allow app to start automatically on powering raspian
+## 🔄 Autostart on Boot
+### To enable the application to run on Raspberry Pi boot:
 ```bash
-sudo mv droneapp.service /lib/systemd/system/droneapp.service
+ssudo mv droneapp.service /lib/systemd/system/droneapp.service
 sudo systemctl daemon-reload
-sudo system enable droneapp.service
+sudo systemctl enable droneapp.service
 ```
-
-5. If you want to stop it from autoloading on Raspi startup, Run:
+### To disable autostart:
 ```bash
 sudo systemctl disable droneapp.service
 ```
-## Link to drone-server repository: https://github.com/gouravgarg9/drone-server
 
-
+## 📂 Related Repository
+### Drone Server (Web Interface + Monitoring):
+https://github.com/gouravgarg9/drone-server
