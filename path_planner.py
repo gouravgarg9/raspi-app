@@ -48,41 +48,44 @@ class PathPlanner:
 
         return []  # No path found
     
-    # Boustrophedon Coverage Planning (Zigzag)
+
     def boustrophedon_coverage(boundary, step_size=0.0002):
-        """
-        Generates a boustrophedon coverage path inside an arbitrary polygon.
-
-        Args:
-            boundary (dict): The boundary dictionary returned by `construct_boundary()`.
-            step_size (float): The step size for path generation in degrees.
-
-        Returns:
-            list of tuples: The ordered path covering the area inside the polygon as (latitude, longitude).
-        """
-        polygon = boundary['polygon']  # Extract the Shapely polygon
+        polygon = boundary['polygon']
         lat_min, lat_max = boundary['ymin'], boundary['ymax']
         lon_min, lon_max = boundary['xmin'], boundary['xmax']
-
+    
         path = []
-        direction = 1  # Left-to-right or right-to-left movement
-
+        direction = 1  # Left to right: 1, Right to left: -1
+    
         for lat in np.arange(lat_min, lat_max, step_size):
-        	# Generate candidate points for the current row
-       	    row_path = []
-            for lon in np.arange(lon_min, lon_max, step_size):
-                point = Point(lon, lat)
-                if polygon.contains(point):
-                    row_path.append((lat, lon))
-
-            # Reverse row order to maintain zigzag motion
-            if direction == -1:
-                row_path.reverse()
-
-            path.extend(row_path)
-            direction *= -1  # Switch direction
-
+            line = LineString([(lon_min, lat), (lon_max, lat)])
+            intersection = polygon.intersection(line)
+    
+            # Handle multiple segments (e.g., concave polygons)
+            segments = []
+            if intersection.is_empty:
+                continue
+            elif intersection.geom_type == 'LineString':
+                segments = [intersection]
+            elif intersection.geom_type == 'MultiLineString':
+                segments = list(intersection)
+    
+        # Extract segment endpoints as path
+            row_path = []
+            for seg in segments:
+                x1, y1, x2, y2 = *seg.coords[0], *seg.coords[-1]
+                p1, p2 = (y1, x1), (y2, x2)  # (lat, lon)
+                if direction == 1:
+                    row_path.extend([p1, p2])
+                else:
+                    row_path.extend([p2, p1])
+    
+            if row_path:
+                path.extend(row_path)
+                direction *= -1
+    
         return path
+
     
     def construct_boundary(coord_list):
         """
