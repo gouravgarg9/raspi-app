@@ -43,6 +43,8 @@ class Drone:
         drone_data.mq135 = sensor_values["MQ135"] or 1
         drone_data.mq2 = sensor_values["MQ2"] or 1
         drone_data.distance = sensor_values["Distance"] or 1
+        drone_data.temperature = sensor_values["Temperature"] or 1
+        drone_data.humidity = sensor_values["Humidity"] or 1
         return drone_data.SerializeToString()
             
     def freeze(self):
