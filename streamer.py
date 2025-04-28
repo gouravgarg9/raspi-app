@@ -5,7 +5,34 @@ import configparser
 import argparse
 import time
 import sys
+import numpy as np
 from utils import Utils
+from ultralytics import YOLO
+model = YOLO("./best.pt")
+
+def detect_smoke(frame):
+    if frame is None:
+        return frame
+
+    # YOLO expects RGB images
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # Run inference
+    results = model.predict(source=rgb_frame, conf=0.5, verbose=False)
+
+    # Draw bounding boxes on original frame
+    if results and results[0].boxes:
+        for box in results[0].boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            conf = float(box.conf[0])
+            cls = int(box.cls[0])
+
+            # Draw rectangle (you can customize color based on cls if needed)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            label = f"Smoke {conf:.2f}"
+            cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
+
+    return frame
 
 # Command-line argument parsing
 parser = argparse.ArgumentParser()
@@ -20,7 +47,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler(APP_DIR + 'logs/ | ' + str(time.asctime()) + '.log'),
+        logging.FileHandler( './logs/' + 'a.log'),
         logging.StreamHandler()
     ]
 )
@@ -47,7 +74,7 @@ logging.info("FPS: %s Quality: %s Width %s Height %s Grayscale: %s",
     str(FRAMES_PER_SECOND), str(JPEG_QUALITY), str(WIDTH), str(HEIGHT), GRAYSCALE)
 logging.info("Drone ID: %s Video Recipient: %s:%s", str(DRONE_ID), str(HOST_IP), str(VIDEO_PORT))
 # OpenCV VideoCapture for USB camera (camera index 0 is usually the default USB camera)
-camera = cv2.VideoCapture(cv2.CAP_V4L2)
+camera = cv2.VideoCapture('./videoplayback.webm')
 
 # gst_pipeline = "v4l2src device=/dev/video0 ! videoconvert ! appsink"
 # gst_pipeline = "nvarguscamerasrc sensor-id=0 ! video/x-raw(memory:NVMM),format=NV12,width=1280,height=720,framerate=30/1 ! nvvidconv ! video/x-raw,format=BGRx ! videoconvert ! video/x-raw,format=BGR ! appsink drop=1"
@@ -65,10 +92,6 @@ camera.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT)
 # Set the camera FPS (frames per second)
 camera.set(cv2.CAP_PROP_FPS, FRAMES_PER_SECOND)
 
-# Open a socket to send the video stream
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.connect((HOST_IP, VIDEO_PORT))
-
 logging.info("Camera module initiated and socket opened, Video Streaming started")
 
 try:
@@ -83,19 +106,18 @@ try:
 
         # Rotate the frame 180 degrees (as in original code)
         # frame = cv2.rotate(frame, cv2.ROTATE_180)
-
+        frame = detect_smoke(frame)
         # If grayscale is enabled, convert the frame to grayscale
         if GRAYSCALE:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+        cv2.imshow('frame', frame)
+                # ADD THIS
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
         # Compress the frame to JPEG
         code, jpg_buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])
 
-        # Create a datagram message with the frame and drone ID
-        datagramMsgBytes = Utils.create_datagram_message(DRONE_ID, jpg_buffer)
-
-        # Send the message through the socket
-        sock.sendall(datagramMsgBytes)
 
         # Optional: Clear the frame buffer (not strictly needed in OpenCV)
         frame = None
@@ -107,8 +129,4 @@ finally:
     # Clean up and close resources
     if camera.isOpened():
         camera.release()
-
-    if sock is not None:
-        sock.close()
-
     logging.info("Stream ended and resources released")
